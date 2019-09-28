@@ -1,0 +1,1 @@
+export { InfoBlockAboutInsult } from "./InfoBlockAboutInsult";

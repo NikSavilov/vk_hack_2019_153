@@ -1,0 +1,10 @@
+.loading {
+  display: flex;
+  justify-content: center;
+  -webkit-justify-content: center;
+  align-items: center;
+  -webkit-align-items: center;
+  position: absolute;
+  height: calc(100% - 56px);
+  width: 100%;
+}

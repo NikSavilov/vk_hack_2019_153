@@ -1,0 +1,57 @@
+.home {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+  -webkit-flex-direction: column;
+  flex-direction: column;
+  position: absolute;
+  height: calc(100% - 56px);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.home__header {
+  color: white;
+  align-self: stretch;
+}
+
+.home__header h1 {
+  font-style: normal;
+  font-weight: normal;
+  text-align: center;
+  font-size: 24px;
+  line-height: 28px;
+}
+
+.home__main {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 23px;
+  color: #adadad;
+  text-align: center;
+}
+
+.home__header-message h1 {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 24px;
+  line-height: 28px;
+  text-align: center;
+}
+
+.home__control {
+  margin-bottom: 50px;
+}
+
+.home__control-button {
+  display: flex;
+  background: none;
+  justify-content: center;
+  cursor: pointer;
+}

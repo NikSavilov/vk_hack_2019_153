@@ -1,0 +1,133 @@
+.questionnaire {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: column;
+  flex-direction: column;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+  position: absolute;
+  height: calc(100% - 56px);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.questionnaire__diagram-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.questionnaire__diagram {
+  color: white;
+  font-weight: 700;
+  height: 130px;
+  width: 130px;
+  border-radius: 50%;
+  font-size: 26px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  box-sizing: border-box;
+  border: 10px solid;
+}
+
+.questionnaire__question {
+  color: white;
+  font-weight: normal;
+  font-size: 24px;
+  line-height: 23px;
+  text-align: center;
+}
+
+.questionnaire__options {
+  display: flex;
+  flex-direction: column;
+  -webkit-flex-direction: column;
+  margin: 0 30px;
+}
+
+.questionnaire__option {
+  padding: 16px 20px;
+  color: black;
+  background-color: white;
+  display: flex;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.0416667);
+  border-radius: 3px;
+  cursor: pointer;
+  margin: 16px 0;
+  font-size: 20px;
+  font-weight: 500;
+  transition: 0.1s linear;
+  -webkit-transition: 0.1s linear;
+  -moz-transition: 0.1s linear;
+  -o-transition: 0.1s linear;
+}
+
+.questionnaire__option-active {
+  transform: scale(1.05);
+}
+
+.questionnaire__option-active:before {
+  content: "";
+  margin-top: 5px;
+  margin-right: 10px;
+  width: 16px;
+  height: 16px;
+  background: url("../../assets/images/checkicon.svg");
+}
+
+.questionnaire__control {
+  display: flex;
+  justify-content: center;
+  -webkit-justify-content: center;
+  margin-bottom: 50px;
+}
+
+.questionnaire__control-button {
+  display: flex;
+  background: none;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.loading {
+  color: white;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 0;
+}
+
+.loading__header {
+  height: 100px;
+  align-items: center;
+}
+
+.loading__header h1 {
+  margin-top: 40px;
+  font-size: 24px;
+  line-height: 28px;
+  text-align: center;
+}
+
+.loading__main {
+  font-size: 18px;
+  line-height: 23px;
+  flex: 1;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+
+  color: #adadad;
+}
+
+.loading__main div {
+  margin-bottom: 10px;
+}
+
+.arrow-icon_rotated {
+  transform: rotateY(180deg);
+}

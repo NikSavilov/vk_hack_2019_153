@@ -1,0 +1,20 @@
+.Panel__in {
+  background: linear-gradient(180deg, #2b00a5 0%, #110041 100%), #ffffff;
+}
+
+.PanelHeader__container,
+.PanelHeader-right,
+.PanelHeader-left-in,
+.PanelHeader-content {
+  background-color: #2b00a5;
+}
+
+.Group {
+  margin: 10px 10px;
+  border-radius: 5px;
+}
+
+.Group:before,
+.Group:after {
+  display: none;
+}

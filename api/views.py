@@ -50,8 +50,16 @@ class CustomerViewSet(MyApiView):
 			return Response(data={"is": False})
 
 	@action(detail=False, methods=["get"])
-	def registered(self, request):
-		pass
+	def new(self, request):
+		try:
+			q=request.query_params
+			q_d = {k: v[0] if len(v) == 1 else v for k, v in q.lists()}
+			customer = Customer(**q_d)
+			customer.save()
+			return Response(data=CustomerSerializer(customer).data)
+		except:
+			print(traceback.format_exc())
+			return Response(data={"is": "false"})
 
 
 class DonationViewSet(MyApiView):

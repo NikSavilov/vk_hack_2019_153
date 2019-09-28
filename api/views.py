@@ -4,6 +4,7 @@ from django.utils import timezone
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.generics import RetrieveUpdateDestroyAPIView
+from rest_framework.parsers import JSONParser, FormParser, MultiPartParser
 from rest_framework.response import Response
 import traceback
 
@@ -17,6 +18,7 @@ class MyApiView(
 	viewsets.ModelViewSet,
 	RetrieveUpdateDestroyAPIView):
 	serializer_class = None
+	parser_classes = [JSONParser, MultiPartParser, FormParser]
 
 
 class MyPatchApiView(MyApiView):
@@ -50,8 +52,6 @@ class CustomerViewSet(MyApiView):
 	@action(detail=False, methods=["get"])
 	def registered(self, request):
 		pass
-
-
 
 
 class DonationViewSet(MyApiView):

@@ -95,7 +95,7 @@ class CustomerViewSet(MyApiView):
 						"title": item.challenge.title,
 						"diffRiskValue": item.challenge.risk_value,
 						"days": item.challenge.days,
-						"daysLeft": random.randint(20, 50),
+						"daysLeft": random.randint(15, 25),
 						"description": item.challenge.description,
 						"id": item.challenge.id
 					}
@@ -110,7 +110,8 @@ class CustomerViewSet(MyApiView):
 					"risk": customer.risk,
 					"diff_risk": customer.diff_risk,
 					"recommended": recommended,
-					"current": current
+					"current": current,
+					"vk_id": user_id
 				}
 				return Response(data=answer)
 			else:

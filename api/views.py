@@ -206,8 +206,6 @@ class ChallengeViewSet(MyApiView):
 			if user_id and challenge_id:
 				customer = Customer.objects.filter(vk_id=user_id)
 				challenge = Challenge.objects.get(id=challenge_id)
-				if challenge in customer[0].challenges:
-					return Response(data={"is": True})
 				if customer:
 					ChallengeChoice(customer=customer[0], challenge=challenge, active=True).save()
 					return Response(data={"is": True})

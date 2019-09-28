@@ -18,10 +18,6 @@ class MyApiView(
 	RetrieveUpdateDestroyAPIView):
 	serializer_class = None
 
-	def put(self, request, *args, **kwargs):
-		re
-		return self.update(request, *args, **kwargs)
-
 
 class MyPatchApiView(MyApiView):
 	def get_serializer_class(self):

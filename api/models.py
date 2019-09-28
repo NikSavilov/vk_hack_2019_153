@@ -41,6 +41,8 @@ class Customer(models.Model):
 
 	def get_recommended(self):
 		choices = Challenge.objects.all().exclude(challengechoice__customer=self)
+		if not self.smoked:
+			choices = choices.exclude(pk=3)
 		return choices
 
 	def get_current(self):

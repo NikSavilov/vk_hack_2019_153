@@ -11,7 +11,7 @@ from rest_framework.parsers import JSONParser, FormParser, MultiPartParser
 from rest_framework.response import Response
 import traceback
 
-from api.models import Customer, Challenge, Question, Answer, Donation
+from api.models import Customer, Challenge, Question, Answer, Donation, ChallengeChoice
 # Create your views here.
 from api.serializers import CustomerSerializer, CustomerWriteSerializer, DonationSerializer, DonationWriteSerializer, \
 	ChallengeSerializer, ChallengeWriteSerializer
@@ -133,7 +133,7 @@ class CustomerViewSet(MyApiView):
 					customer = customer[0]
 					customer.risk = float(risk)
 					challenge = Challenge.objects.get(id=id)
-					answers = challenge.question.answers\
+					answers = challenge.question.answers \
 						.filter(customer__vk_id=user_id).order_by("date")
 					if answers:
 						ans = answers[0]
@@ -196,3 +196,20 @@ class ChallengeViewSet(MyApiView):
 	queryset = Challenge.objects.all()
 	serializer_class = ChallengeSerializer
 	update_serializer_class = ChallengeWriteSerializer
+
+	@action(detail=False, methods=["get"])
+	def choose(self, request):
+		try:
+			user_id = request.query_params.get("user_id", None)
+			challenge_id = request.query_params.get("challenge_id", None)
+			if user_id and challenge_id:
+				customer = Customer.objects.filter(vk_id=user_id)
+				challenge = Challenge.objects.get(id=challenge_id)
+				if challenge in customer[0].challenges:
+					return Response(data={"is": True})
+				if customer:
+					ChallengeChoice(customer=customer[0], challenge=challenge, active=True).save()
+					return Response(data={"is": True})
+			return Response(data={"is": False})
+		except:
+			return Response(data={"is": False})

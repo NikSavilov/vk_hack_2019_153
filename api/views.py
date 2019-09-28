@@ -18,6 +18,10 @@ class MyApiView(
 	RetrieveUpdateDestroyAPIView):
 	serializer_class = None
 
+	def put(self, request, *args, **kwargs):
+		re
+		return self.update(request, *args, **kwargs)
+
 
 class MyPatchApiView(MyApiView):
 	def get_serializer_class(self):
@@ -46,6 +50,12 @@ class CustomerViewSet(MyApiView):
 				return Response(data={"is": False})
 		except:
 			return Response(data={"is": False})
+
+	@action(detail=False, methods=["get"])
+	def registered(self, request):
+		pass
+
+
 
 
 class DonationViewSet(MyApiView):

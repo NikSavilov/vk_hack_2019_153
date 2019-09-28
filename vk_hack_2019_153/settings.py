@@ -1,4 +1,3 @@
-
 """
 Django settings for vk_hack_2019_153 project.
 
@@ -41,6 +40,7 @@ INSTALLED_APPS = [
 
 	# Vendor
 	"rest_framework",
+	'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -51,8 +51,11 @@ MIDDLEWARE = [
 	'django.contrib.auth.middleware.AuthenticationMiddleware',
 	'django.contrib.messages.middleware.MessageMiddleware',
 	'django.middleware.clickjacking.XFrameOptionsMiddleware',
+	'corsheaders.middleware.CorsMiddleware',
+	'django.middleware.common.CommonMiddleware',
 ]
 
+CORS_ORIGIN_ALLOW_ALL = True
 ROOT_URLCONF = 'vk_hack_2019_153.urls'
 
 TEMPLATES = [

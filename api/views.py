@@ -81,7 +81,7 @@ class CustomerViewSet(MyApiView):
 				recommended = []
 				for item in recommended_query:
 					new = {
-						"title": item.question.text,
+						"title": item.title,
 						"diffRiskValue": item.risk_value,
 						"days": item.days,
 						"description": item.description,

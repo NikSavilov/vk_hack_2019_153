@@ -61,3 +61,5 @@ class DonationWriteSerializer(serializers.ModelSerializer):
 		model = Donation
 		fields = "__all__"
 		depth = 1
+
+

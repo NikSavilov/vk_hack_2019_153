@@ -5,10 +5,12 @@ from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.generics import RetrieveUpdateDestroyAPIView
 from rest_framework.response import Response
+import traceback
 
 from api.models import Customer, Challenge, Question, Variant, Answer, Donation
 # Create your views here.
-from api.serializers import CustomerSerializer, CustomerWriteSerializer, DonationSerializer, DonationWriteSerializer
+from api.serializers import CustomerSerializer, CustomerWriteSerializer, DonationSerializer, DonationWriteSerializer, \
+	ChallengeSerializer, ChallengeWriteSerializer
 
 
 class MyApiView(
@@ -31,6 +33,19 @@ class CustomerViewSet(MyApiView):
 	queryset = Customer.objects.all()
 	serializer_class = CustomerSerializer
 	update_serializer_class = CustomerWriteSerializer
+
+	@action(detail=False, methods=["get"])
+	def registered(self, request):
+
+		try:
+			user_id = request.query_params.get("user_id", None)
+			customer = Customer.objects.filter(vk_id=user_id)
+			if customer:
+				return Response(data={"is": True})
+			else:
+				return Response(data={"is": False})
+		except:
+			return Response(data={"is": False})
 
 
 class DonationViewSet(MyApiView):
@@ -56,11 +71,23 @@ class DonationViewSet(MyApiView):
 		own = request.query_params.get("own", None)
 		try:
 			if user_id and sum and own:
-				donation = Donation(user_id=user_id, sum=sum, own=own)
-				donation.date = timezone.now()
-				donation.save()
-				return Response(data=DonationSerializer(donation).data)
+				customer = Customer.objects.filter(vk_id=int(user_id))
+				customer = customer[0] if customer.count() else None
+				if customer:
+					donation = Donation(customer=customer, sum=int(sum), own=True if own == "true" else False)
+					donation.date = timezone.now()
+					donation.save()
+					return Response(data=DonationSerializer(donation).data)
+				else:
+					raise Http404("Wrong params.")
 			else:
 				raise Http404("Wrong params.")
 		except:
+
 			raise Http404("Wrong params.")
+
+
+class ChallengeViewSet(MyApiView):
+	queryset = Challenge.objects.all()
+	serializer_class = ChallengeSerializer
+	update_serializer_class = ChallengeWriteSerializer

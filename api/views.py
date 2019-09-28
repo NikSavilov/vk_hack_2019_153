@@ -81,7 +81,7 @@ class CustomerViewSet(MyApiView):
 				recommended = []
 				for item in recommended_query:
 					new = {
-						"title": item.title,
+						"title": item.question.text,
 						"diffRiskValue": item.risk_value,
 						"days": item.days,
 						"description": item.description,
@@ -92,7 +92,7 @@ class CustomerViewSet(MyApiView):
 				current = []
 				for item in current_query:
 					new = {
-						"title": item.challenge.title,
+						"title": item.challenge.question.text,
 						"diffRiskValue": item.challenge.risk_value,
 						"days": item.challenge.days,
 						"daysLeft": random.randint(15, 25),
@@ -176,11 +176,16 @@ class DonationViewSet(MyApiView):
 		user_id = request.query_params.get("user_id", None)
 		sum = request.query_params.get("sum", None)
 		own = request.query_params.get("own", None)
+		subscription = request.query_params.get("subscription", None)
 		try:
 			if user_id and sum and own:
+
 				customer = Customer.objects.filter(vk_id=int(user_id))
 				customer = customer[0] if customer.count() else None
 				if customer:
+					if subscription and subscription.lower() == "true":
+						customer.subscribed = True
+						customer.save()
 					donation = Donation(customer=customer, sum=int(sum), own=True if own == "true" else False)
 					donation.date = timezone.now()
 					donation.save()
@@ -204,6 +209,7 @@ class ChallengeViewSet(MyApiView):
 		try:
 			user_id = request.query_params.get("user_id", None)
 			challenge_id = request.query_params.get("challenge_id", None)
+			# subs
 			if user_id and challenge_id:
 				customer = Customer.objects.filter(vk_id=user_id)
 				challenge = Challenge.objects.get(id=challenge_id)

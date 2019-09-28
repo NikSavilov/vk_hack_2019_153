@@ -1,3 +1,6 @@
+import datetime
+import random
+
 from django.http import Http404
 from django.shortcuts import render
 from django.utils import timezone
@@ -8,7 +11,7 @@ from rest_framework.parsers import JSONParser, FormParser, MultiPartParser
 from rest_framework.response import Response
 import traceback
 
-from api.models import Customer, Challenge, Question, Variant, Answer, Donation
+from api.models import Customer, Challenge, Question, Answer, Donation
 # Create your views here.
 from api.serializers import CustomerSerializer, CustomerWriteSerializer, DonationSerializer, DonationWriteSerializer, \
 	ChallengeSerializer, ChallengeWriteSerializer
@@ -38,7 +41,6 @@ class CustomerViewSet(MyApiView):
 
 	@action(detail=False, methods=["get"])
 	def registered(self, request):
-
 		try:
 			user_id = request.query_params.get("user_id", None)
 			customer = Customer.objects.filter(vk_id=user_id)
@@ -52,7 +54,7 @@ class CustomerViewSet(MyApiView):
 	@action(detail=False, methods=["get"])
 	def new(self, request):
 		try:
-			q=request.query_params
+			q = request.query_params
 			q_d = {k: v[0] if len(v) == 1 else v for k, v in q.lists()}
 			customer = Customer(**q_d)
 			customer.save()
@@ -60,6 +62,61 @@ class CustomerViewSet(MyApiView):
 		except:
 			print(traceback.format_exc())
 			return Response(data={"is": "false"})
+
+	@action(detail=False, methods=["get"])
+	def get_main_page(self, request):
+		try:
+			user_id = request.query_params.get("user_id", None)
+			customer = Customer.objects.filter(vk_id=int(user_id))
+			if customer.count() == 1:
+				customer = customer[0]
+				recommended_query = customer.get_recommended()
+				current_query = customer.get_current()
+				recommended = []
+				for item in recommended_query:
+					new = {
+						"title": item.title,
+						"diffRiskValue": item.risk_value,
+						"days": item.days,
+						"description": item.description,
+					}
+					line = item.question.answers.filter(customer__vk_id=user_id).order_by("date")
+					if line:
+						new["id"] = line[0].id
+					else:
+						new["id"] = 0
+					recommended.append(new)
+
+				current = []
+				for item in current_query:
+					new = {
+						"title": item.challenge.title,
+						"diffRiskValue": item.challenge.risk_value,
+						"days": item.challenge.days,
+						"daysLeft": random.randint(20, 50),
+						"description": item.challenge.description,
+					}
+					line = item.challenge.question.answers.filter(customer__vk_id=user_id).order_by("date")
+					if line:
+						new["id"] = line[0].id
+						new["completed"] = line[0].value
+					else:
+						new["id"] = 0
+						new["id"] = False
+					current.append(new)
+				answer = {
+					"amount": sum([item["sum"] for item in customer.donations.values("sum")]),
+					"risk": customer.risk,
+					"diff_risk": customer.diff_risk,
+					"recommended": recommended,
+					"current": current
+				}
+				return Response(data=answer)
+			else:
+				return Response(data={"is": False})
+		except:
+			print(traceback.format_exc())
+			return Response(data={"is": False})
 
 
 class DonationViewSet(MyApiView):

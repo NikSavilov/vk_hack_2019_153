@@ -21,7 +21,7 @@ class ChallengeWriteSerializer(serializers.ModelSerializer):
 class AnswerSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Answer
-		fields = ["id", "date", "value", "variant"]
+		fields = ["id", "date", "value", "question"]
 		depth = 1
 
 

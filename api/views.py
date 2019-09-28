@@ -45,6 +45,12 @@ class CustomerViewSet(MyApiView):
 			user_id = request.query_params.get("user_id", None)
 			customer = Customer.objects.filter(vk_id=user_id)
 			if customer:
+				if customer[0].last_online < (timezone.now() - datetime.timedelta(hours=24)):
+					customer[0].diff_risk = 0
+					customer[0].save()
+				else:
+					customer[0].last_online = timezone.now()
+					customer[0].save()
 				return Response(data={"is": True})
 			else:
 				return Response(data={"is": False})
@@ -79,12 +85,8 @@ class CustomerViewSet(MyApiView):
 						"diffRiskValue": item.risk_value,
 						"days": item.days,
 						"description": item.description,
+						"id": item.id
 					}
-					line = item.question.answers.filter(customer__vk_id=user_id).order_by("date")
-					if line:
-						new["id"] = line[0].id
-					else:
-						new["id"] = 0
 					recommended.append(new)
 
 				current = []
@@ -95,14 +97,13 @@ class CustomerViewSet(MyApiView):
 						"days": item.challenge.days,
 						"daysLeft": random.randint(20, 50),
 						"description": item.challenge.description,
+						"id": item.challenge.id
 					}
 					line = item.challenge.question.answers.filter(customer__vk_id=user_id).order_by("date")
 					if line:
-						new["id"] = line[0].id
 						new["completed"] = line[0].value
 					else:
-						new["id"] = 0
-						new["id"] = False
+						new["completed"] = False
 					current.append(new)
 				answer = {
 					"amount": sum([item["sum"] for item in customer.donations.values("sum")]),
@@ -114,6 +115,39 @@ class CustomerViewSet(MyApiView):
 				return Response(data=answer)
 			else:
 				return Response(data={"is": False})
+		except:
+			print(traceback.format_exc())
+			return Response(data={"is": False})
+
+	@action(detail=False, methods=["get"])
+	def apply_challenge(self, request):
+		try:
+			user_id = request.query_params.get("user_id", None)
+			completed = request.query_params.get("completed", None)
+			id = request.query_params.get("id", None)
+			risk = request.query_params.get("risk", None)
+			diff_risk = request.query_params.get("diff_risk", None)
+			if user_id and completed and id and risk and diff_risk:
+				customer = Customer.objects.filter(vk_id=user_id)
+				if customer.count() == 1:
+					customer = customer[0]
+					customer.risk = float(risk)
+					challenge = Challenge.objects.get(id=id)
+					answers = challenge.question.answers\
+						.filter(customer__vk_id=user_id).order_by("date")
+					if answers:
+						ans = answers[0]
+						ans.value = True if completed.lower() == "true" else False
+						ans.save()
+					else:
+						ans = Answer(customer=customer,
+									 value=True if completed.lower() == "true" else False,
+									 question=challenge.question)
+						ans.save()
+					customer.diff_risk = float(diff_risk)
+					customer.save()
+					return Response(data={"is": True})
+			return Response(data={"is": False})
 		except:
 			print(traceback.format_exc())
 			return Response(data={"is": False})

@@ -29,6 +29,7 @@ class Customer(models.Model):
 	eat_fruits = models.IntegerField(blank=True, null=True, default=None)
 	stress = models.IntegerField(blank=True, null=True, default=None)
 
+	last_online = models.DateTimeField(blank=True, null=True, default=timezone.now)
 	risk = models.FloatField(blank=True, null=True, default=None)
 	diff_risk = models.FloatField(blank=True, null=True, default=0)
 

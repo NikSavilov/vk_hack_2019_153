@@ -28,6 +28,7 @@ class Customer(models.Model):
 	sleep_hours = models.IntegerField(blank=True, null=True, default=None)
 	eat_fruits = models.IntegerField(blank=True, null=True, default=None)
 	stress = models.IntegerField(blank=True, null=True, default=None)
+	subscribed = models.BooleanField(blank=True, null=True, default=False)
 
 	last_online = models.DateTimeField(blank=True, null=True, default=timezone.now)
 	risk = models.FloatField(blank=True, null=True, default=None)
@@ -45,6 +46,7 @@ class Customer(models.Model):
 	def get_current(self):
 		choices = ChallengeChoice.objects.filter(customer=self)
 		return choices
+
 
 class ChallengeChoice(models.Model):
 	customer = models.ForeignKey(Customer, on_delete=models.CASCADE)

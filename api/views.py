@@ -111,7 +111,8 @@ class CustomerViewSet(MyApiView):
 					"diff_risk": customer.diff_risk,
 					"recommended": recommended,
 					"current": current,
-					"vk_id": user_id
+					"vk_id": user_id,
+					"subscribed": customer.subscribed
 				}
 				return Response(data=answer)
 			else:

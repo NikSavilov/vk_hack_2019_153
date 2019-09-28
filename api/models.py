@@ -5,13 +5,18 @@ from django.utils import timezone
 
 
 class Customer(models.Model):
-	vk_id = models.IntegerField()
+	vk_id = models.IntegerField(unique=True)
 	weight = models.FloatField(blank=True, null=True, default=None)
 	height = models.FloatField(blank=True, null=True, default=None)
-	year_of_birth = models.IntegerField(blank=True, null=True, default=None)
+	mass_index = models.FloatField(blank=True, null=True, default=None)
+	years = models.IntegerField(blank=True, null=True, default=None)
 	gender = models.CharField(max_length=20, choices=(("male", "male"), ("female", "female")), blank=True, null=True)
-	smoked = models.BooleanField(blank=True, default=False)
-	drunk = models.BooleanField(blank=True, default=False)
+	smoked = models.IntegerField(blank=True, null=True, default=None)
+	heart_disease = models.IntegerField(blank=True, null=True, default=None)
+	do_sports = models.IntegerField(blank=True, null=True, default=None)
+	sleep_hours = models.IntegerField(blank=True, null=True, default=None)
+	eat_fruits = models.IntegerField(blank=True, null=True, default=None)
+	stress = models.IntegerField(blank=True, null=True, default=None)
 
 	challenges = models.ManyToManyField("Challenge", related_name="customers", blank=True, through="ChallengeChoice")
 

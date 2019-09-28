@@ -1,6 +1,7 @@
 from rest_framework import serializers
+from rest_framework.decorators import action
 
-from api.models import Customer, Challenge, Answer
+from api.models import Customer, Challenge, Answer, Donation
 
 
 class ChallengeSerializer(serializers.ModelSerializer):
@@ -38,11 +39,25 @@ class CustomerSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Customer
 		fields = "__all__"
-		depth = 3
+		depth = 4
 
 
 class CustomerWriteSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Customer
+		fields = "__all__"
+		depth = 1
+
+
+class DonationSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Donation
+		fields = ["id", 'date', "own", 'sum']
+		depth = 3
+
+
+class DonationWriteSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Donation
 		fields = "__all__"
 		depth = 1

@@ -5,7 +5,8 @@ from rest_framework import routers
 from api import views
 
 router = routers.DefaultRouter()
-router.register(r'customer', views.CustomerViewSet)
+router.register(r'customers', views.CustomerViewSet)
+router.register(r'donations', views.DonationViewSet)
 
 urlpatterns = [
 	url(r'^', include(router.urls)),

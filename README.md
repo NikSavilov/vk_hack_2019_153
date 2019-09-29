@@ -1,6 +1,4 @@
 # VK Hackathon 2019
-## We did not expect you to come here, but still glad to see
-
 ### VK MINI APP: https://vk.com/app7150431_78245611
 ### Каманда: SLK
 ### Cтол: 153 

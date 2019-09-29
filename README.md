@@ -4,6 +4,9 @@
 ### Каманда: SLK
 ### Cтол: 153 
 
+**Важно!**
+
+Папка **vk-mini-app__orbi** - клонированный фронтенд проекта, его репозиторий по ссылке: https://github.com/vadimkor56/vk-mini-app__orbi
 
 To deploy on www.pythonanywhere.com:
 

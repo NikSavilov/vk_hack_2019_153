@@ -119,7 +119,7 @@ const questions = [
 export const maxRiskValue = 15.5;
 
 export const getProperPercentage = value => {
-  return (value * 0.5).toFixed(2);
+  return (value * 0.3).toFixed(2);
 };
 
 let answers = [];
@@ -212,8 +212,8 @@ export class Questionnaire extends React.Component {
       questionNumber !== questions.length - 1 ? "Дальше" : "Закончить";
     const currentQuestionId = currentQuestion.id;
 
-    const borderColor = `rgb(${percentage / 0.51}%, ${100 -
-      percentage / 0.51}%, 65%)`;
+    const borderColor = `rgb(${percentage / 0.31}%, ${100 -
+      percentage / 0.31}%, 65%)`;
 
     return (
       <Panel id={this.props.id}>
@@ -282,10 +282,27 @@ export class Questionnaire extends React.Component {
                 <Input
                   type="number"
                   placeholder={currentQuestion.input.placeholder}
-                  value={this.state.inputValue}
+                  value={this.state.inputValue || ""}
                   alignment="center"
                   onChange={event => {
-                    const value = event.currentTarget.value;
+                    const initVal = event.currentTarget.value;
+
+                    let value = parseInt(initVal.replace(/\D+/g, "")) || "0";
+
+                    if (value > 1000) {
+                      value = value % 1000;
+                    }
+
+                    if (
+                      value.toString()[0] === "0" &&
+                      value.toString().length > 1
+                    ) {
+                      value = value
+                        .toString()
+                        .split("")
+                        .slice(1)
+                        .join("");
+                    }
 
                     answers[questionNumber] = {
                       id: currentQuestionId,
@@ -346,7 +363,7 @@ export class Questionnaire extends React.Component {
 
                     this.setState({ isLoading: true });
 
-                    await new Promise(resolve => setTimeout(resolve, 1500));
+                    await new Promise(resolve => setTimeout(resolve, 7000));
 
                     await fetch(
                       `https://niksavilov.pythonanywhere.com/api/customers/new/?${query}`
@@ -372,7 +389,9 @@ export class Questionnaire extends React.Component {
                 data-to="main"
                 className="questionnaire__control-button"
               >
-                <div style={{ marginBottom: "10px" }}>{buttonTitle}</div>
+                <div style={{ marginBottom: "10px", color: "white" }}>
+                  {buttonTitle}
+                </div>
                 <ArrowIcon />
               </Button>
             </Div>
@@ -380,7 +399,10 @@ export class Questionnaire extends React.Component {
         ) : (
           <Div className="loading">
             <Div className="loading__header">
-              <h1>Мы подготавливаем рекомендации для Вас</h1>
+              <h1>
+                Мы помогаем Вам заводить и поддерживать привычки, снижающие риск
+                инсульта.
+              </h1>
             </Div>
 
             <Div className="loading__main">

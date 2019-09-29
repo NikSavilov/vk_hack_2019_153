@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Panel, Button, Div, PanelHeader } from "@vkontakte/vkui";
 import "./Home.css";
-import { TripleDotsIcon } from "../../icons/TripleDotsIcon";
 import { ArrowIcon } from "../../icons/ArrowIcon";
 
 export const Home = ({ id, go, fetchedUser }) => {
@@ -54,9 +53,9 @@ export const Home = ({ id, go, fetchedUser }) => {
 
         <Div className="home__main">
           <div>{state.mainText}</div>
-          <div>
-            <TripleDotsIcon page={state.page} />
-          </div>
+          {/*<div>*/}
+          {/*  <TripleDotsIcon page={state.page} />*/}
+          {/*</div>*/}
         </Div>
 
         <Div className="home__control">
@@ -67,7 +66,9 @@ export const Home = ({ id, go, fetchedUser }) => {
             data-to="questionnaire"
             className="home__control-button"
           >
-            <div style={{ marginBottom: "10px" }}>{state.buttonTitle}</div>
+            <div style={{ marginBottom: "10px", color: "white" }}>
+              {state.buttonTitle}
+            </div>
             <ArrowIcon />
           </Button>
         </Div>

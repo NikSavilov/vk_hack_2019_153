@@ -37,6 +37,7 @@
   -webkit-align-items: center;
   justify-content: center;
   -webkit-justify-content: center;
+  cursor: pointer;
 }
 
 .main-page__diagram {
@@ -144,6 +145,7 @@
   display: flex;
   align-items: center;
   -webkit-align-items: center;
+  cursor: pointer;
 }
 
 .main-page__recommended-challenge-title,
@@ -155,4 +157,10 @@
 
 .main-page__recommended-challenge-value div {
   color: #39c4a5;
+}
+
+@media (max-width: 400px) {
+  .main-page__header-money {
+    font-size: 50px;
+  }
 }

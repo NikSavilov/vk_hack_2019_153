@@ -14,6 +14,8 @@ import Icon56MoneyTransferOutline from "@vkontakte/icons/dist/56/money_transfer_
 import Textarea from "@vkontakte/vkui/dist/components/Textarea/Textarea";
 import Button from "@vkontakte/vkui/dist/components/Button/Button";
 import { InfoIcon } from "../../icons/InfoIcon";
+import { RocketIcon } from "../../icons/RocketIcon";
+import { HeartIcon } from "../../icons/HeartIcon";
 
 export class MainPage extends React.Component {
   constructor(props) {
@@ -111,9 +113,28 @@ export class MainPage extends React.Component {
                   );
                 }}
               >{`${this.state.money}₽`}</Div>
-              <Div className="main-page__diagram-wrapper">
+              <Div
+                className="main-page__diagram-wrapper"
+                onClick={() => {
+                  setModal(
+                    <ModalRoot activeModal="info-about-percentage">
+                      <ModalCard
+                        id="info-about-percentage"
+                        onClose={() => setModal(null)}
+                        icon={<HeartIcon />}
+                        title="5-летний риск"
+                        caption="Риск расчитывается на основе теста от Национального института инсульта и прикладных нейронаук."
+                      />
+                    </ModalRoot>
+                  );
+                }}
+              >
                 <Div className="main-page__diagram" style={{ borderColor }}>
-                  {`${parseFloat(percentage).toFixed(1)}%`}
+                  {`${
+                    parseFloat(percentage).toFixed(1) < 0
+                      ? 0.0
+                      : parseFloat(percentage).toFixed(1)
+                  }%`}
                   <br />
                   <Div className="main-page__diagram-dynamic">
                     <ArrowUpIcon
@@ -122,8 +143,8 @@ export class MainPage extends React.Component {
                         "main-page__diagram-dynamic-icon-rotated"}`}
                     />
                     {`${parseFloat(
-                      Math.abs(this.state.lastDiffRiskValue).toFixed(2)
-                    )}%`}
+                      Math.abs(this.state.lastDiffRiskValue).toString()
+                    ).toFixed(2)}%`}
                   </Div>
                 </Div>
               </Div>
@@ -154,6 +175,44 @@ export class MainPage extends React.Component {
                           <Div
                             className="main-page__challenges-challenge"
                             style={{ opacity: challenge.completed ? 0.75 : 1 }}
+                            onClick={() => {
+                              setModal(
+                                <ModalRoot activeModal="info-about-challenge">
+                                  <ModalCard
+                                    id="info-about-challenge"
+                                    onClose={() => setModal(null)}
+                                    icon={<RocketIcon />}
+                                    title={challenge.title}
+                                    caption={
+                                      <div>
+                                        <div
+                                          style={{
+                                            fontSize: "16px",
+                                            fontWeight: "900"
+                                          }}
+                                        >
+                                          {challenge.days} дней осталось
+                                        </div>
+                                        <br />
+                                        {challenge.description}
+                                      </div>
+                                    }
+                                    actions={[
+                                      {
+                                        title: "Поделиться",
+                                        type: "primary",
+                                        action: () => {
+                                          setModal(null);
+                                          connect.send("VKWebAppShare", {
+                                            link: "vk.com/app5727453_-49894129"
+                                          });
+                                        }
+                                      }
+                                    ]}
+                                  />
+                                </ModalRoot>
+                              );
+                            }}
                           >
                             <div className="main-page__challenges-challenge-title">
                               {challenge.title}
@@ -216,7 +275,7 @@ export class MainPage extends React.Component {
                         </Div>
                       );
                     })
-                  : "У Вас нет активных челенджей, можете добавить их из списка рекомендуемых."}
+                  : "Добавьте челендж из списка рекомендуемых. Каждый день, после выполнения привычки, ставьте галочку в приложении."}
               </Div>
             </Div>
 
@@ -411,7 +470,7 @@ export class MainPage extends React.Component {
                                   }
                                   actions={[
                                     {
-                                      title: "Принять и поделиться",
+                                      title: "Принять",
                                       type: "primary",
                                       action: () => {
                                         setModal(null);
@@ -449,9 +508,6 @@ export class MainPage extends React.Component {
                                         ).then(response =>
                                           response.clone().json()
                                         );
-                                        connect.send("VKWebAppShare", {
-                                          link: "vk.com/app5727453_-49894129"
-                                        });
                                       }
                                     }
                                   ]}

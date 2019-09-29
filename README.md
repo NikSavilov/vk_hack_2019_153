@@ -1,5 +1,6 @@
 # VK Hackathon 2019
 ### VK MINI APP: https://vk.com/app7150431_78245611
+### FRONTEND REPOSITORY: https://github.com/vadimkor56/vk-mini-app__orbi
 ### Каманда: SLK
 ### Cтол: 153 
 
